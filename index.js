@@ -101,6 +101,25 @@ async function run() {
           res.status(500).json({ error: 'Failed ' });
         }
       });
+      app.put('/users', (req, res) => {
+        const { email } = req.query;
+        const { name, university, address } = req.body;
+      
+        // Find the user with the given email
+        const userIndex = users.findIndex((user) => user.email === email);
+      
+        if (userIndex !== -1) {
+          // Update user data
+          users[userIndex].name = name || users[userIndex].name;
+          users[userIndex].university = university || users[userIndex].university;
+          users[userIndex].address = address || users[userIndex].address;
+      
+          res.json({ message: 'User data updated successfully' });
+        } else {
+          res.status(404).json({ message: 'User not found' });
+        }
+      });
+      
       
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
